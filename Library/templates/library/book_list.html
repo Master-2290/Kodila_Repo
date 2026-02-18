@@ -1,0 +1,25 @@
+<h1>Catalogue des livres</h1>
+
+<a href="?sort=title">Trier par titre</a> |
+<a href="?sort=author">Trier par auteur</a> |
+<a href="?sort=year">Trier par annee</a>
+
+<form method="get" action="{% url 'search_book' %}">
+    <input type="text" name="q" placeholder="Rechercher...">
+    <button type="submit">Rechercher</button>
+</form>
+
+<ul>
+{% for book in books %}
+    <li>
+        {{ book.title }} - {{ book.author }} - {{ book.year }}
+        {% if book.available %}
+            <a href="{% url 'borrow_book' book.id %}">Emprunter</a>
+        {% else %}
+            (Indisponible)
+        {% endif %}
+    </li>
+{% empty %}
+    <li>Aucun livre trouve.</li>
+{% endfor %}
+</ul>
