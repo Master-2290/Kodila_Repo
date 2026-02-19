@@ -1,8 +1,15 @@
+{% extends "library/base.html" %}
+
+{% block title %}Catalogue{% endblock %}
+
+{% block content %}
 <h1>Catalogue des livres</h1>
 
-<a href="?sort=title">Trier par titre</a> |
-<a href="?sort=author">Trier par auteur</a> |
-<a href="?sort=year">Trier par annee</a>
+<p>
+    <a href="?sort=title">Trier par titre</a> |
+    <a href="?sort=author">Trier par auteur</a> |
+    <a href="?sort=year">Trier par annee</a>
+</p>
 
 <form method="get" action="{% url 'search_book' %}">
     <input type="text" name="q" placeholder="Rechercher...">
@@ -12,9 +19,10 @@
 <ul>
 {% for book in books %}
     <li>
-        {{ book.title }} - {{ book.author }} - {{ book.year }}
+        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
+        - {{ book.author }} - {{ book.year }}
         {% if book.available %}
-            <a href="{% url 'borrow_book' book.id %}">Emprunter</a>
+            (Disponible)
         {% else %}
             (Indisponible)
         {% endif %}
@@ -23,3 +31,4 @@
     <li>Aucun livre trouve.</li>
 {% endfor %}
 </ul>
+{% endblock %}

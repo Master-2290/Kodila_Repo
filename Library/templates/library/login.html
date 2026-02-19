@@ -1,0 +1,17 @@
+{% extends "library/base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<h1>Connexion etudiant</h1>
+
+<p>Entrez votre matricule (cree auparavant dans Django admin).</p>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <label for="matricule">Matricule</label>
+    <input id="matricule" type="text" name="matricule" required>
+    <button type="submit">Se connecter</button>
+</form>
+{% endblock %}

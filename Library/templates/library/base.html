@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BiBlio{% endblock %} - BiBlio</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Accueil</a>
+            <a href="{% url 'book_list' %}">Catalogue</a>
+            {% if logged_student %}
+                <span>Connecte: {{ logged_student.name }} ({{ logged_student.matricule }})</span>
+                <form method="post" action="{% url 'student_logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Deconnexion</button>
+                </form>
+            {% else %}
+                <a href="{% url 'student_login' %}">Connexion etudiant</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% if messages %}
+        <section>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    <main>
+        {% block content %}
+        <h1>Bienvenue sur BiBlio</h1>
+        <p>Plateforme de gestion des manuels et emprunts etudiants.</p>
+        <ul>
+            <li><a href="{% url 'book_list' %}">Consulter le catalogue</a></li>
+            {% if logged_student %}
+            <li><a href="{% url 'book_list' %}">Emprunter ou restituer un livre</a></li>
+            {% else %}
+            <li><a href="{% url 'student_login' %}">Se connecter avec un matricule</a></li>
+            {% endif %}
+            <li><a href="/admin/">Acces administration</a></li>
+        </ul>
+        {% endblock %}
+    </main>
+</body>
+</html>

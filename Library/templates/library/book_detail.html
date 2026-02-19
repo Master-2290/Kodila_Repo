@@ -1,0 +1,29 @@
+{% extends "library/base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+
+<p><strong>Auteur:</strong> {{ book.author }}</p>
+<p><strong>Annee:</strong> {{ book.year }}</p>
+<p><strong>ISBN:</strong> {{ book.isbn }}</p>
+<p>
+    <strong>Statut:</strong>
+    {% if book.available %}Disponible{% else %}Indisponible{% endif %}
+</p>
+
+<form method="post" action="{% url 'borrow_book' book.id %}" style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'book_detail' book.id %}">
+    <button type="submit" {% if not book.available %}disabled{% endif %}>Emprunter</button>
+</form>
+
+<form method="post" action="{% url 'return_book' book.id %}" style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'book_detail' book.id %}">
+    <button type="submit" {% if not active_loan %}disabled{% endif %}>Restituer</button>
+</form>
+
+<p><a href="{% url 'book_list' %}">Retour au catalogue</a></p>
+{% endblock %}
